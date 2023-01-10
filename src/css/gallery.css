@@ -1,0 +1,17 @@
+.gallery {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.photo-card img {
+    width: 300px;
+}
+
+.photo-card {
+    padding: 10px;
+}
+
+p {
+    margin: 0px;
+}
