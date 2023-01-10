@@ -10,7 +10,7 @@ let page = 1;
 let totalPages = 0;
 let queryValue = '';
 const DEBOUNCE_DELAY = 500;
-const IMAGES_PER_PAGE = 100;
+const IMAGES_PER_PAGE = 40;
 
 window.addEventListener(
   'scroll',
@@ -54,7 +54,9 @@ const getImageData = async (query, page) => {
       return null;
     }
 
-    notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
+    if (page === 1) {
+      notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
+    }
 
     page += 1;
     totalPages = Math.ceil(totalHits / IMAGES_PER_PAGE);
@@ -135,7 +137,6 @@ function infinityScroll() {
     generateMarkup(queryValue);
   }
 }
-generateMarkup('red');
 
 const onClickCard = e => {
   const modalMarkup = modal.createModal(e.target.dataset);
