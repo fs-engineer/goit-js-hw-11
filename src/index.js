@@ -1,6 +1,9 @@
 import fetchImages from './js/api/pixabay-api';
 import notiflix from 'notiflix';
 import throttle from 'lodash.throttle';
+import modal from './js/modal';
+import scroll from './js/scroll';
+
 import refs from './js/refs';
 
 let page = 1;
@@ -77,7 +80,8 @@ const makeImageMarkup = images => {
         downloads,
       }) => `
         <div class="photo-card">
-          <img src="${webformatURL}" alt="${tags}" loading="lazy" data-largeImage />
+          <img src="${webformatURL}" alt="${tags}" loading="lazy" data-largeImageUrl="${largeImageURL}" data-likes="${likes}"
+           data-views="${views}" data-comments="${comments} />
           <div class="info">
             <p class="info-item">
               <b>Likes: </b>${likes}
@@ -120,7 +124,6 @@ function infinityScroll() {
   const viewPortBottom =
     document.documentElement.getBoundingClientRect().bottom;
   if (viewPortBottom < document.documentElement.clientHeight + 100) {
-    console.log('scrolll');
     page += 1;
 
     if (page > totalPages) {
@@ -132,5 +135,19 @@ function infinityScroll() {
     generateMarkup(queryValue);
   }
 }
+generateMarkup('red');
 
+const onClickCard = e => {
+  const modalMarkup = modal.createModal(e.target.dataset);
+
+  refs.bodyEl.insertAdjacentHTML('beforeend', modalMarkup);
+  const backdrop = document.querySelector('.backdrop');
+
+  backdrop.addEventListener('click', modal.removeModal);
+  window.addEventListener('keydown', modal.removeModal);
+
+  scroll.disableScroll();
+};
+
+refs.galleryEl.addEventListener('click', onClickCard);
 refs.formEl.addEventListener('submit', changeFormData);
